@@ -6,23 +6,19 @@ This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/
 
 [CS228](https://cs.stanford.edu/~ermon/cs228/index.html)课程也有[Python Tutorial](https://github.com/kuleshov/cs228-material/blob/master/tutorials/python/cs228-python-tutorial.ipynb)。
 
-##Table of contents
+## Table of contents
 
-- [Python](#Python)
-
-  - [Basic data types](#Basic data types)
-
-  - [Containers](#Containers)
-
-    - [Lists](#Lists)
-    - [Dictionaries](#Dictionaries)
-    - [Sets](#Sets)
-    - [Tuples](#Tuples)
-  - [Functions](#Functions)
-  - [Classes](#Classes)
+- [Python](#python)
+  - [Basic data types](#basic data types)
+  - [Containers](#containers)
+    - [Lists](#lists)
+    - [Dictionaries](#dictionaries)
+    - [Sets](#sets)
+    - [Tuples](#tuples)
+  - [Functions](#functions)
+  - [Classes](#classes)
 
 - Numpy
-
   - [Arrays](http://cs231n.github.io/python-numpy-tutorial/#numpy-arrays)
   - [Array indexing](http://cs231n.github.io/python-numpy-tutorial/#numpy-array-indexing)
   - [Datatypes](http://cs231n.github.io/python-numpy-tutorial/#numpy-datatypes)
@@ -228,9 +224,9 @@ del d['fish']         # Remove an element from a dictionary
 print(d.get('fish', 'N/A')) # "fish" is no longer a key; prints "N/A"
 ```
 
-详细内容参见[dict](https://docs.python.org/3.5/library/stdtypes.html#dict)。****
+详细内容参见[dict](https://docs.python.org/3.5/library/stdtypes.html#dict)。
 
-**Loops :** 字典循环方式如下
+**Loops  : ** 字典循环方式如下
 
 ```python
 d = {'person': 2, 'cat': 4, 'spider': 8}
@@ -288,7 +284,7 @@ print(nums)  # Prints "{0, 1, 2, 3, 4, 5}"
 
 ### Tuples
 
-Tuple和List很像，Tuple是**有序不可变**的List。最大的不同点是：Tuple可以作为字典([Dict](#Dictionaries))的键，集合([Set](#Sets))的元素，而List不可以。
+Tuple和List很像，Tuple是**有序不可变**的List。最大的不同点是：Tuple可以作为字典([Dict](#dictionaries))的键，集合([Set](#sets))的元素，而List不可以。
 
 ```python
 d = {(x, x + 1): x for x in range(10)}  # Create a dictionary with tuple keys
