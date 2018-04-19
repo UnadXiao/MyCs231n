@@ -1,5 +1,4 @@
 # Python / Numpy Tutorial
-
 This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/jcjohns/).
 
 如果有Matlab基础的话，推荐使用这个教程 [numpy for Matlab users](http://wiki.scipy.org/NumPy_for_Matlab_Users) 。
@@ -9,7 +8,7 @@ This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/
 ## Table of contents
 
 - [Python](#python)
-  - [Basic data types](#basic data types)
+  - [Basic data types](#basic-data-types)
   - [Containers](#containers)
     - [Lists](#lists)
     - [Dictionaries](#dictionaries)
@@ -58,11 +57,11 @@ print(quicksort([3, 6, 8, 10, 1, 2, 1]))
 
 Python存在2.7和3.5+两个版本，同时这两个版本互相不兼容。本课程使用的是Python3.5版本。在命令行输入命令`python --version`检测你的Python版本。
 
-## Basic data types
+### Basic data types
 
 Python的基础类型有整形，浮点，布尔和字符串。
 
-### Numbers:
+**Numbers :**
 
 ```python
 x = 3
@@ -85,9 +84,7 @@ print(y, y + 1, y * 2, y ** 2) # Prints "2.5 3.5 5.0 6.25"
 
 Python对于复数有自己的内建类型，具体内容参考 [numeric-types-int-float-complex](https://docs.python.org/3.5/library/stdtypes.html#numeric-types-int-float-complex)。
 
-### Booleans
-
-Python的逻辑运算使用的是英文，而不是常见的`&&`和`||`。布尔类型只有两个值`True`和`False`。
+**Booleans :**Python的逻辑运算使用的是英文，而不是常见的`&&`和`||`。布尔类型只有两个值`True`和`False`。
 
 ```python
 t = True
@@ -99,9 +96,7 @@ print(not t)   # Logical NOT; prints "False"
 print(t != f)  # Logical XOR; prints "True"
 ```
 
-### Strings
-
-Python对字符串的支持很强大，有许多好用的函数。
+**Strings :**Python对字符串的支持很强大，有许多好用的函数。
 
 ```python
 hello = 'hello'    # String literals can use single quotes
@@ -131,7 +126,7 @@ print('  world '.strip())  # Strip leading and trailing whitespace; prints "worl
 
 Python包含很多种内建容器类型：**list**，**dictionaries**，**sets**和**tuples**。
 
-### Lists
+#### Lists
 
 Lists可以看作是可变长度的数组，并且可以存储不同类型数据。
 
@@ -163,7 +158,7 @@ nums[2:4] = [8, 9]        # Assign a new sublist to a slice
 print(nums)               # Prints "[0, 1, 8, 9, 4]"
 ```
 
-**Loops:** 我们可以按照下面方式遍历一个list元素。
+**Loops :** 我们可以按照下面方式遍历一个list元素。
 
 ```python
 animals = ['cat', 'dog', 'monkey']
@@ -181,7 +176,7 @@ for idx, animal in enumerate(animals):
 # Prints "#1: cat", "#2: dog", "#3: monkey", each on its own line
 ```
 
-**List comprehensions:** <u>列表推导(List comprehensions)是在C环境下运行的，所以速度比for循环快。</u>程序上常常需要将数据从一种类型转换到另外一种类型，例如计算一个list各个元素的平方。
+**List comprehensions :** <u>列表推导(List comprehensions)是在C环境下运行的，所以速度比for循环快。</u>程序上常常需要将数据从一种类型转换到另外一种类型，例如计算一个list各个元素的平方。
 
 ```python
 nums = [0, 1, 2, 3, 4]
@@ -226,7 +221,7 @@ print(d.get('fish', 'N/A')) # "fish" is no longer a key; prints "N/A"
 
 详细内容参见[dict](https://docs.python.org/3.5/library/stdtypes.html#dict)。
 
-**Loops  : ** 字典循环方式如下
+**Loops  :** 字典循环方式如下
 
 ```python
 d = {'person': 2, 'cat': 4, 'spider': 8}
@@ -245,7 +240,7 @@ for animal, legs in d.items():
 # Prints "A person has 2 legs", "A cat has 4 legs", "A spider has 8 legs"
 ```
 
-**Dictionary comprehensions : **和[列表推导](#Lists)类似，可以很方便的构建一个字典。
+**Dictionary comprehensions :** 和[列表推导](#Lists)类似，可以很方便的构建一个字典。
 
 ```python
 nums = [0, 1, 2, 3, 4]
@@ -272,7 +267,7 @@ print(len(animals))       # Prints "2"
 
 详细用法参考 [set](https://docs.python.org/3.5/library/stdtypes.html#set)。
 
-**Loops : **可以使用和List循环类似的方法循环Set元素。有一段值得注意，Set是无序的所以无法知Set中元素的顺序。
+**Loops :**可以使用和List循环类似的方法循环Set元素。有一段值得注意，Set是无序的所以无法知Set中元素的顺序。
 
 **Set comprehensions :** 构建方式同List/Set推导。
 
@@ -353,3 +348,6 @@ g.greet(loud=True)   # Call an instance method; prints "HELLO, FRED!"
 ```
 
 详细用法参考 [classes](https://docs.python.org/3.5/tutorial/classes.html)。
+
+### Numpy
+
