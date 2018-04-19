@@ -1,4 +1,5 @@
 # Python / Numpy Tutorial
+
 This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/jcjohns/).
 
 如果有Matlab基础的话，推荐使用这个教程 [numpy for Matlab users](http://wiki.scipy.org/NumPy_for_Matlab_Users) 。
@@ -8,7 +9,7 @@ This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/
 ## Table of contents
 
 - [Python](#python)
-  - [Basic data types](#basic-data-types)
+  - [Basic data types](#basic data types)
   - [Containers](#containers)
     - [Lists](#lists)
     - [Dictionaries](#dictionaries)
@@ -17,7 +18,7 @@ This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/
   - [Functions](#functions)
   - [Classes](#classes)
 
-- Numpy
+- [Numpy](#Numpy)
   - [Arrays](http://cs231n.github.io/python-numpy-tutorial/#numpy-arrays)
   - [Array indexing](http://cs231n.github.io/python-numpy-tutorial/#numpy-array-indexing)
   - [Datatypes](http://cs231n.github.io/python-numpy-tutorial/#numpy-datatypes)
@@ -57,11 +58,11 @@ print(quicksort([3, 6, 8, 10, 1, 2, 1]))
 
 Python存在2.7和3.5+两个版本，同时这两个版本互相不兼容。本课程使用的是Python3.5版本。在命令行输入命令`python --version`检测你的Python版本。
 
-### Basic data types
+## Basic data types
 
 Python的基础类型有整形，浮点，布尔和字符串。
 
-**Numbers :**
+### Numbers:
 
 ```python
 x = 3
@@ -84,7 +85,9 @@ print(y, y + 1, y * 2, y ** 2) # Prints "2.5 3.5 5.0 6.25"
 
 Python对于复数有自己的内建类型，具体内容参考 [numeric-types-int-float-complex](https://docs.python.org/3.5/library/stdtypes.html#numeric-types-int-float-complex)。
 
-**Booleans :**Python的逻辑运算使用的是英文，而不是常见的`&&`和`||`。布尔类型只有两个值`True`和`False`。
+### Booleans
+
+Python的逻辑运算使用的是英文，而不是常见的`&&`和`||`。布尔类型只有两个值`True`和`False`。
 
 ```python
 t = True
@@ -96,7 +99,9 @@ print(not t)   # Logical NOT; prints "False"
 print(t != f)  # Logical XOR; prints "True"
 ```
 
-**Strings :**Python对字符串的支持很强大，有许多好用的函数。
+### Strings
+
+Python对字符串的支持很强大，有许多好用的函数。
 
 ```python
 hello = 'hello'    # String literals can use single quotes
@@ -126,7 +131,7 @@ print('  world '.strip())  # Strip leading and trailing whitespace; prints "worl
 
 Python包含很多种内建容器类型：**list**，**dictionaries**，**sets**和**tuples**。
 
-#### Lists
+### Lists
 
 Lists可以看作是可变长度的数组，并且可以存储不同类型数据。
 
@@ -158,7 +163,7 @@ nums[2:4] = [8, 9]        # Assign a new sublist to a slice
 print(nums)               # Prints "[0, 1, 8, 9, 4]"
 ```
 
-**Loops :** 我们可以按照下面方式遍历一个list元素。
+**Loops:** 我们可以按照下面方式遍历一个list元素。
 
 ```python
 animals = ['cat', 'dog', 'monkey']
@@ -176,7 +181,7 @@ for idx, animal in enumerate(animals):
 # Prints "#1: cat", "#2: dog", "#3: monkey", each on its own line
 ```
 
-**List comprehensions :** <u>列表推导(List comprehensions)是在C环境下运行的，所以速度比for循环快。</u>程序上常常需要将数据从一种类型转换到另外一种类型，例如计算一个list各个元素的平方。
+**List comprehensions:** <u>列表推导(List comprehensions)是在C环境下运行的，所以速度比for循环快。</u>程序上常常需要将数据从一种类型转换到另外一种类型，例如计算一个list各个元素的平方。
 
 ```python
 nums = [0, 1, 2, 3, 4]
@@ -221,7 +226,7 @@ print(d.get('fish', 'N/A')) # "fish" is no longer a key; prints "N/A"
 
 详细内容参见[dict](https://docs.python.org/3.5/library/stdtypes.html#dict)。
 
-**Loops  :** 字典循环方式如下
+**Loops  : ** 字典循环方式如下
 
 ```python
 d = {'person': 2, 'cat': 4, 'spider': 8}
@@ -240,7 +245,7 @@ for animal, legs in d.items():
 # Prints "A person has 2 legs", "A cat has 4 legs", "A spider has 8 legs"
 ```
 
-**Dictionary comprehensions :** 和[列表推导](#Lists)类似，可以很方便的构建一个字典。
+**Dictionary comprehensions : **和[列表推导](#Lists)类似，可以很方便的构建一个字典。
 
 ```python
 nums = [0, 1, 2, 3, 4]
@@ -267,7 +272,7 @@ print(len(animals))       # Prints "2"
 
 详细用法参考 [set](https://docs.python.org/3.5/library/stdtypes.html#set)。
 
-**Loops :**可以使用和List循环类似的方法循环Set元素。有一段值得注意，Set是无序的所以无法知Set中元素的顺序。
+**Loops : **可以使用和List循环类似的方法循环Set元素。有一段值得注意，Set是无序的所以无法知Set中元素的顺序。
 
 **Set comprehensions :** 构建方式同List/Set推导。
 
@@ -347,7 +352,136 @@ g.greet()            # Call an instance method; prints "Hello, Fred"
 g.greet(loud=True)   # Call an instance method; prints "HELLO, FRED!"
 ```
 
-详细用法参考 [classes](https://docs.python.org/3.5/tutorial/classes.html)。
+###### 详细用法参考 [classes](https://docs.python.org/3.5/tutorial/classes.html)。
 
-### Numpy
+## Numpy
+
+Numpy是科学计算的核心库，它提供了高性能多维度数组的对象和处理这些数组的工具。如果你熟悉MATLAB你可参考这个[教程](http://scipy.github.io/old-wiki/pages/NumPy_for_Matlab_Users)。
+
+### Arrays
+
+numpy数组是矩阵排列的数值，使用非负下标来访问。numpy数组的维度是数组的*rank*，数组的*shape*是数组各个维度的元组大小。
+
+可以使用Python的lists来初始化numpy，通过"[ ]"访问各个元素：
+
+```python
+import numpy as np
+a = np.array([1, 2, 3])		# Create a rank 1 array
+print(type(a))				# Print "<class 'numpy.ndarray'>"
+print(a.shape)				# Print "(3, )"
+print(a[0], a[1], a[2])		# Print "1 2 3"
+a[0]=5						# Change an element of the array
+print(a)					# Prints "[5, 2, 3]"
+
+b = np.array([1, 2, 3], [4, 5, 6])		# Create a rank 2 array
+print(b.shape)							# Prints "(2, 3)"
+print(b[0, 0], b[0, 1], b[1, 0])		# Prints "1 2 4"
+```
+
+Numpy提供了很多种创建array的函数：
+
+```python
+import numpy as np
+
+a = np.zeros((2,2))   # Create an array of all zeros
+print(a)              # Prints "[[ 0.  0.]
+                      #          [ 0.  0.]]"
+
+b = np.ones((1,2))    # Create an array of all ones
+print(b)              # Prints "[[ 1.  1.]]"
+
+c = np.full((2,2), 7)  # Create a constant array
+print(c)               # Prints "[[ 7.  7.]
+                       #          [ 7.  7.]]"
+
+d = np.eye(2)         # Create a 2x2 identity matrix
+print(d)              # Prints "[[ 1.  0.]
+                      #          [ 0.  1.]]"
+
+e = np.random.random((2,2))  # Create an array filled with random values
+print(e)                     # Might print "[[ 0.91940167  0.08143941]
+                             #               [ 0.68744134  0.87236687]]"
+```
+
+你可以从[arrays-creation](https://docs.scipy.org/doc/numpy/user/basics.creation.html#arrays-creation)获取更多创建array的方法。
+
+### Array indexing
+
+Numpy提供了多种方式访问array。
+
+**Slicing :**和list类似，array也可以切片。多维的array需要指定各个维度上的切片。
+
+```python
+import numpy as np
+
+# Create the following rank 2 array with shape (3, 4)
+# [[ 1  2  3  4]
+#  [ 5  6  7  8]
+#  [ 9 10 11 12]]
+a = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+
+# Use slicing to pull out the subarray consisting of the first 2 rows
+# and columns 1 and 2; b is the following array of shape (2, 2):
+# [[2 3]
+#  [6 7]]
+b = a[:2, 1:3]
+
+# A slice of an array is a view into the same data, so modifying it
+# will modify the original array.
+# array的切片和原始数据指向的是相同数据，改变切片数据同样会改变原始的数据
+print(a[0, 1])   # Prints "2"
+b[0, 0] = 77     # b[0, 0] is the same piece of data as a[0, 1]
+print(a[0, 1])   # Prints "77"
+```
+
+您也可以将整数索引与切片索引混合在一起。但是，这样做会产生比原始数组更低级别的数组。注意，这与MATLAB处理数组切片的方式完全不同：
+
+```python
+import numpy as np
+
+# Create the following rank 2 array with shape (3, 4)
+# [[ 1  2  3  4]
+#  [ 5  6  7  8]
+#  [ 9 10 11 12]]
+a = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+
+# Two ways of accessing the data in the middle row of the array.
+# Mixing integer indexing with slices yields an array of lower rank,
+# while using only slices yields an array of the same rank as the
+# original array:
+row_r1 = a[1, :]    # Rank 1 view of the second row of a
+row_r2 = a[1:2, :]  # Rank 2 view of the second row of a
+print(row_r1, row_r1.shape)  # Prints "[5 6 7 8] (4,)"
+print(row_r2, row_r2.shape)  # Prints "[[5 6 7 8]] (1, 4)"
+
+# We can make the same distinction when accessing columns of an array:
+col_r1 = a[:, 1]
+col_r2 = a[:, 1:2]
+print(col_r1, col_r1.shape)  # Prints "[ 2  6 10] (3,)"
+print(col_r2, col_r2.shape)  # Prints "[[ 2]
+                             #          [ 6]
+                             #          [10]] (3, 1)"
+```
+
+**Integer array indexing :**当使用整数下标对numpy数组切片时，得到的数组视图将始终是原始数组的子数组。 相比之下，整数数组索引允许您使用另一个数组的数据构造任意数组。 这里是一个例子：
+
+```python
+import numpy as np
+
+a = np.array([[1,2], [3, 4], [5, 6]])
+
+# An example of integer array indexing.
+# The returned array will have shape (3,) and
+print(a[[0, 1, 2], [0, 1, 0]])  # Prints "[1 4 5]"
+
+# The above example of integer array indexing is equivalent to this:
+print(np.array([a[0, 0], a[1, 1], a[2, 0]]))  # Prints "[1 4 5]"
+
+# When using integer array indexing, you can reuse the same
+# element from the source array:
+print(a[[0, 0], [1, 1]])  # Prints "[2 2]"
+
+# Equivalent to the previous integer array indexing example
+print(np.array([a[0, 1], a[0, 1]]))  # Prints "[2 2]"
+```
 
