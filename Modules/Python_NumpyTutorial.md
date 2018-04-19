@@ -19,11 +19,11 @@ This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/
   - [Classes](#classes)
 
 - [Numpy](#Numpy)
-  - [Arrays](http://cs231n.github.io/python-numpy-tutorial/#numpy-arrays)
-  - [Array indexing](http://cs231n.github.io/python-numpy-tutorial/#numpy-array-indexing)
-  - [Datatypes](http://cs231n.github.io/python-numpy-tutorial/#numpy-datatypes)
-  - [Array math](http://cs231n.github.io/python-numpy-tutorial/#numpy-math)
-  - [Broadcasting](http://cs231n.github.io/python-numpy-tutorial/#numpy-broadcasting)
+  - [Arrays](#arrays)
+  - [Array indexing](#array-indexing)
+  - [Datatypes](#datatypes)
+  - [Array math](#array-math)
+  - [Broadcasting](#broadcasting)
 
  - SciPy
 
@@ -485,3 +485,305 @@ print(a[[0, 0], [1, 1]])  # Prints "[2 2]"
 print(np.array([a[0, 1], a[0, 1]]))  # Prints "[2 2]"
 ```
 
+整数数组索引的一个有用技巧是从矩阵的每一行中选择或改变一个元素：
+
+```python
+import numpy as np
+
+# Create a new array from which we will select elements
+a = np.array([[1,2,3], [4,5,6], [7,8,9], [10, 11, 12]])
+
+print(a)  # prints "array([[ 1,  2,  3],
+          #                [ 4,  5,  6],
+          #                [ 7,  8,  9],
+          #                [10, 11, 12]])"
+
+# Create an array of indices
+b = np.array([0, 2, 0, 1])
+
+# Select one element from each row of a using the indices in b
+print(a[np.arange(4), b])  # Prints "[ 1  6  7 11]"
+
+# Mutate one element from each row of a using the indices in b
+a[np.arange(4), b] += 10
+
+print(a)  # prints "array([[11,  2,  3],
+          #                [ 4,  5, 16],
+          #                [17,  8,  9],
+          #                [10, 21, 12]])
+```
+
+**Boolean array indexing :**布尔数组索引可以让你可以挑出数组中的任意元素。通常，这种索引类型用来选择满足一些条件的数组元素。下面是例子：
+
+```python
+import numpy as np
+
+a = np.array([[1,2], [3, 4], [5, 6]])
+
+bool_idx = (a > 2)   # Find the elements of a that are bigger than 2;
+                     # this returns a numpy array of Booleans of the same
+                     # shape as a, where each slot of bool_idx tells
+                     # whether that element of a is > 2.
+
+print(bool_idx)      # Prints "[[False False]
+                     #          [ True  True]
+                     #          [ True  True]]"
+
+# We use boolean array indexing to construct a rank 1 array
+# consisting of the elements of a corresponding to the True values
+# of bool_idx
+print(a[bool_idx])  # Prints "[3 4 5 6]"
+
+# We can do all of the above in a single concise statement:
+print(a[a > 2])     # Prints "[3 4 5 6]"
+```
+
+为了简洁起见，我们忽略了大量有关numpy数组索引的细节; 如果你想知道更多，你应该阅读文档[arrays-indexing](https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html)。
+
+### Datatypes
+
+每个numpy数组都是相同类型的元素的网格。 Numpy提供了一组可用于构造数组的数字数据类型。 Numpy在创建数组时尝试猜测数据类型，但构造数组的函数通常还包含可选参数以明确指定数据类型。 这里是一个例子：
+
+```python
+import numpy as np
+
+x = np.array([1, 2])   # Let numpy choose the datatype
+print(x.dtype)         # Prints "int64"
+
+x = np.array([1.0, 2.0])   # Let numpy choose the datatype
+print(x.dtype)             # Prints "float64"
+
+x = np.array([1, 2], dtype=np.int64)   # Force a particular datatype
+print(x.dtype)                         # Prints "int64"
+```
+
+关于numpy datatypes的内容可以阅读[array-dtype](https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html)。
+
+### Array math
+
+基本的数学函数在数组上按元素运算，并且可以作为运算符重载和numpy模块中的函数使用：
+
+```python
+import numpy as np
+
+x = np.array([[1,2],[3,4]], dtype=np.float64)
+y = np.array([[5,6],[7,8]], dtype=np.float64)
+
+# Elementwise sum; both produce the array
+# [[ 6.0  8.0]
+#  [10.0 12.0]]
+print(x + y)
+print(np.add(x, y))
+
+# Elementwise difference; both produce the array
+# [[-4.0 -4.0]
+#  [-4.0 -4.0]]
+print(x - y)
+print(np.subtract(x, y))
+
+# Elementwise product; both produce the array
+# [[ 5.0 12.0]
+#  [21.0 32.0]]
+print(x * y)
+print(np.multiply(x, y))
+
+# Elementwise division; both produce the array
+# [[ 0.2         0.33333333]
+#  [ 0.42857143  0.5       ]]
+print(x / y)
+print(np.divide(x, y))
+
+# Elementwise square root; produces the array
+# [[ 1.          1.41421356]
+#  [ 1.73205081  2.        ]]
+print(np.sqrt(x))
+```
+
+请注意，与MATLAB不同，`*`是元素乘法，而不是矩阵乘法。 我们使用`dot`函数来计算向量的内积，将向量乘以矩阵，并乘以矩阵。 `dot`可以作为numpy模块中的一个函数，也可以作为数组对象的一个实例方法：
+
+```python
+import numpy as np
+
+x = np.array([[1,2],[3,4]])
+y = np.array([[5,6],[7,8]])
+
+v = np.array([9,10])
+w = np.array([11, 12])
+
+# Inner product of vectors; both produce 219
+print(v.dot(w))
+print(np.dot(v, w))
+
+# Matrix / vector product; both produce the rank 1 array [29 67]
+print(x.dot(v))
+print(np.dot(x, v))
+
+# Matrix / matrix product; both produce the rank 2 array
+# [[19 22]
+#  [43 50]]
+print(x.dot(y))
+print(np.dot(x, y))
+```
+
+Numpy为数组执行计算提供了许多有用的函数; 其中最有用的是`sum`：
+
+```python
+import numpy as np
+
+x = np.array([[1,2],[3,4]])
+
+print(np.sum(x))  # Compute sum of all elements; prints "10"
+print(np.sum(x, axis=0))  # Compute sum of each column; prints "[4 6]"
+print(np.sum(x, axis=1))  # Compute sum of each row; prints "[3 7]"
+```
+
+您可以在文档中找到由numpy提供的数学函数的完整列表[math](https://docs.scipy.org/doc/numpy/reference/routines.math.html)。
+
+除了使用数组计算数学函数外，我们还经常需要矩阵变维(reshape)或以其他方式处理数组中的数据。 这种类型的操作最简单的例子是转置一个矩阵; 要转置矩阵，只需使用数组对象的`T`属性即可：
+
+```python
+import numpy as np
+
+x = np.array([[1,2], [3,4]])
+print(x)    # Prints "[[1 2]
+            #          [3 4]]"
+print(x.T)  # Prints "[[1 3]
+            #          [2 4]]"
+
+# Note that taking the transpose of a rank 1 array does nothing:
+v = np.array([1,2,3])
+print(v)    # Prints "[1 2 3]"
+print(v.T)  # Prints "[1 2 3]"
+```
+
+Numpy提供了很多处理数组的函数，参见[array-manipulation](https://docs.scipy.org/doc/numpy/reference/routines.array-manipulation.html)。
+
+### Broadcasting
+
+广播是一种强大的机制，允许numpy在执行算术运算时与不同形状的数组一起工作。 通常我们有一个更小的数组和更大的数组，我们希望多次使用更小的数组来对更大的数组执行一些操作。
+例如，假设我们想要为矩阵的每一行添加一个常量向量。 我们可以这样做：
+
+```python
+import numpy as np
+
+# We will add the vector v to each row of the matrix x,
+# storing the result in the matrix y
+x = np.array([[1,2,3], [4,5,6], [7,8,9], [10, 11, 12]])
+v = np.array([1, 0, 1])
+y = np.empty_like(x)   # Create an empty matrix with the same shape as x
+
+# Add the vector v to each row of the matrix x with an explicit loop
+for i in range(4):
+    y[i, :] = x[i, :] + v
+
+# Now y is the following
+# [[ 2  2  4]
+#  [ 5  5  7]
+#  [ 8  8 10]
+#  [11 11 13]]
+print(y)
+```
+
+这有效; 但是，当矩阵`x`非常大时，在Python中计算显式循环可能会很慢。 请注意，将向量`v`添加到矩阵`x`的每一行相当于通过垂直堆叠`v`的多个副本来形成矩阵`vv`，然后执行`x`和`vv`的元素求和。 我们可以像这样实施这种方法：
+
+```python
+import numpy as np
+
+# We will add the vector v to each row of the matrix x,
+# storing the result in the matrix y
+x = np.array([[1,2,3], [4,5,6], [7,8,9], [10, 11, 12]])
+v = np.array([1, 0, 1])
+vv = np.tile(v, (4, 1))   # Stack 4 copies of v on top of each other
+print(vv)                 # Prints "[[1 0 1]
+                          #          [1 0 1]
+                          #          [1 0 1]
+                          #          [1 0 1]]"
+y = x + vv  # Add x and vv elementwise
+print(y)  # Prints "[[ 2  2  4
+          #          [ 5  5  7]
+          #          [ 8  8 10]
+          #          [11 11 13]]"
+```
+
+Numpy广播允许我们执行此计算，而不实际创建v的多个副本。考虑使用广播的此版本：
+
+```python
+import numpy as np
+
+# We will add the vector v to each row of the matrix x,
+# storing the result in the matrix y
+x = np.array([[1,2,3], [4,5,6], [7,8,9], [10, 11, 12]])
+v = np.array([1, 0, 1])
+y = x + v  # Add v to each row of x using broadcasting
+print(y)  # Prints "[[ 2  2  4]
+          #          [ 5  5  7]
+          #          [ 8  8 10]
+          #          [11 11 13]]"
+```
+
+由于广播机制，即使`x`大小是`（4,3）` 、`v`大小是`(3, )`，`y = x + v`这行公代码也起作用。这行代码就好像`v`实际上已经变维`（4，3）`了一样，其中每一行都是`v`的一个副本，并且求和是按照元素进行的。
+
+广播两个阵列遵循以下规则：
+
+1. 如果数组不具有相同的等级，则用1来预先给出较低等级数组的形状，直到两个形状具有相同的长度。
+2. 如果这两个数组在维度中具有相同的大小，或者如果其中一个数组在该维度中具有大小1，则这两个数组被称为在维度中兼容。
+3. 如果阵列在所有维度上兼容，阵列可以一起广播。
+4. 广播后，每个阵列的行为就好像它的形状等于两个输入阵列的形状的元素最大值。
+5. 在一个数组的大小为1而另一个数组的大小大于1的任何维中，第一个数组的行为就好像它是沿着该维复制的。
+
+如果这种解释不理解，请尝试阅读文档[broadcasting](https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)或此解释[EricsBroadcastingDoc](http://scipy.github.io/old-wiki/pages/EricsBroadcastingDoc)中的解释。
+
+支持广播的功能被称为通用函数(*universal functions*)。 您可以在文档[ufuncs](https://docs.scipy.org/doc/numpy/reference/ufuncs.html#available-ufuncs)中找到所有通用函数的列表。
+
+以下是广播的一些应用：
+
+```python
+import numpy as np
+
+# Compute outer product of vectors
+v = np.array([1,2,3])  # v has shape (3,)
+w = np.array([4,5])    # w has shape (2,)
+# To compute an outer product, we first reshape v to be a column
+# vector of shape (3, 1); we can then broadcast it against w to yield
+# an output of shape (3, 2), which is the outer product of v and w:
+# [[ 4  5]
+#  [ 8 10]
+#  [12 15]]
+print(np.reshape(v, (3, 1)) * w)
+
+# Add a vector to each row of a matrix
+x = np.array([[1,2,3], [4,5,6]])
+# x has shape (2, 3) and v has shape (3,) so they broadcast to (2, 3),
+# giving the following matrix:
+# [[2 4 6]
+#  [5 7 9]]
+print(x + v)
+
+# Add a vector to each column of a matrix
+# x has shape (2, 3) and w has shape (2,).
+# If we transpose x then it has shape (3, 2) and can be broadcast
+# against w to yield a result of shape (3, 2); transposing this result
+# yields the final result of shape (2, 3) which is the matrix x with
+# the vector w added to each column. Gives the following matrix:
+# [[ 5  6  7]
+#  [ 9 10 11]]
+print((x.T + w).T)
+# Another solution is to reshape w to be a column vector of shape (2, 1);
+# we can then broadcast it directly against x to produce the same
+# output.
+print(x + np.reshape(w, (2, 1)))
+
+# Multiply a matrix by a constant:
+# x has shape (2, 3). Numpy treats scalars as arrays of shape ();
+# these can be broadcast together to shape (2, 3), producing the
+# following array:
+# [[ 2  4  6]
+#  [ 8 10 12]]
+print(x * 2)
+```
+
+广播通常会让你的代码更加简洁快捷，所以你应该尽可能地使用它。
+
+### Numpy Documentation
+
+这个简短的概述触及了你需要知道的有关numpy的许多重要事情，但还远远没有结束。 查看numpy的参考资料[numpy reference](https://docs.scipy.org/doc/numpy/reference/)，了解更多关于numpy的信息。
