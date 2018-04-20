@@ -787,3 +787,71 @@ print(x * 2)
 ### Numpy Documentation
 
 这个简短的概述触及了你需要知道的有关numpy的许多重要事情，但还远远没有结束。 查看numpy的参考资料[numpy reference](https://docs.scipy.org/doc/numpy/reference/)，了解更多关于numpy的信息。
+
+## SciPy
+
+Numpy提供了一个高性能的多维数组和用于计算和操作这些数组的基本工具。 SciPy以此为基础构建，并提供了大量可在numpy数组上运行的函数，并且可用于不同类型的科学和工程应用。
+熟悉SciPy的最好方法是浏览文档[SciPy](https://docs.scipy.org/doc/scipy/reference/index.html)。 我们将重点介绍一些您可能会对该课程有用的SciPy部分。
+
+### Image opertaions
+
+SciPy提供了一些基本功能来处理图像。 例如，它具有将图像从磁盘读取到numpy数组，将numpy数组作为图像写入磁盘以及调整图像大小的功能。 下面是一个简单展示这些功能的例子：
+
+```python
+from scipy.misc import imread, imsave, imresize
+
+# Read an JPEG image into a numpy array
+img = imread('assets/cat.jpg')
+print(img.dtype, img.shape)  # Prints "uint8 (400, 248, 3)"
+
+# We can tint the image by scaling each of the color channels
+# by a different scalar constant. The image has shape (400, 248, 3);
+# we multiply it by the array [1, 0.95, 0.9] of shape (3,);
+# numpy broadcasting means that this leaves the red channel unchanged,
+# and multiplies the green and blue channels by 0.95 and 0.9
+# respectively.
+img_tinted = img * [1, 0.95, 0.9]
+
+# Resize the tinted image to be 300 by 300 pixels.
+img_tinted = imresize(img_tinted, (300, 300))
+
+# Write the tinted image back to disk
+imsave('assets/cat_tinted.jpg', img_tinted)
+```
+
+![cat](../Images/cat.jpg)
+
+![cat_tinted](../Images/cat_tinted.jpg)
+
+### MATLAB files
+
+函数`scipy.io.loadmat`和`scipy.io.savemat`允许您读写MATLAB文件。 你可以在文档[Scipy.io](https://docs.scipy.org/doc/scipy/reference/io.html)中阅读它们的用法。
+
+### Distance between points
+
+SciPy定义了一些用于计算点集之间距离的有用函数。
+函数`scipy.spatial.distance.pdist`计算给定集合中所有点对之间的距离：
+
+```python
+import numpy as np
+from scipy.spatial.distance import pdist, squareform
+
+# Create the following array where each row is a point in 2D space:
+# [[0 1]
+#  [1 0]
+#  [2 0]]
+x = np.array([[0, 1], [1, 0], [2, 0]])
+print(x)
+
+# Compute the Euclidean distance between all rows of x.
+# d[i, j] is the Euclidean distance between x[i, :] and x[j, :],
+# and d is the following array:
+# [[ 0.          1.41421356  2.23606798]
+#  [ 1.41421356  0.          1.        ]
+#  [ 2.23606798  1.          0.        ]]
+d = squareform(pdist(x, 'euclidean'))
+print(d)
+```
+
+您可以在文档[pdist](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html)中阅读有关此功能的所有详细信息。
+一个类似的函数（`scipy.spatial.distance.cdist`）计算两集合点之间两两的距离; 你可以在文档[cdist](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cdist.html)中阅读它。
