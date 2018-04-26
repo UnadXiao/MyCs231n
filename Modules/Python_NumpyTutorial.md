@@ -25,17 +25,17 @@ This tutorial was contributed by [Justin Johnson](http://cs.stanford.edu/people/
   - [Array math](#array-math)
   - [Broadcasting](#broadcasting)
 
- - SciPy
+ - [SciPy](#scipy)
 
-  - [Image operations](http://cs231n.github.io/python-numpy-tutorial/#scipy-image)
-  - [MATLAB files](http://cs231n.github.io/python-numpy-tutorial/#scipy-matlab)
-  - [Distance between points](http://cs231n.github.io/python-numpy-tutorial/#scipy-dist)
+  - [Image operations](#image-operations)
+  - [MATLAB files](#matlab-files)
+  - [Distance between points](#distance-between-points)
 
- - Matplotlib
+ - [Matplotlib](#matplotlib)
 
-   - [Plotting](http://cs231n.github.io/python-numpy-tutorial/#matplotlib-plotting)
-   - [Subplots](http://cs231n.github.io/python-numpy-tutorial/#matplotlib-subplots)
-   - [Images](http://cs231n.github.io/python-numpy-tutorial/#matplotlib-images)
+   - [Plotting](#plotting)
+   - [Subplots](#subplots)
+   - [Images](#images)
 
 ## Python
 
@@ -787,3 +787,180 @@ print(x * 2)
 ### Numpy Documentation
 
 这个简短的概述触及了你需要知道的有关numpy的许多重要事情，但还远远没有结束。 查看numpy的参考资料[numpy reference](https://docs.scipy.org/doc/numpy/reference/)，了解更多关于numpy的信息。
+
+## SciPy
+
+Numpy提供了一个高性能的多维数组和用于计算和操作这些数组的基本工具。 SciPy以此为基础构建，并提供了大量可在numpy数组上运行的函数，并且可用于不同类型的科学和工程应用。
+熟悉SciPy的最好方法是浏览文档[SciPy](https://docs.scipy.org/doc/scipy/reference/index.html)。 我们将重点介绍一些您可能会对该课程有用的SciPy部分。
+
+### Image opertaions
+
+SciPy提供了一些基本功能来处理图像。 例如，它具有将图像从磁盘读取到numpy数组，将numpy数组作为图像写入磁盘以及调整图像大小的功能。 下面是一个简单展示这些功能的例子：
+
+```python
+from scipy.misc import imread, imsave, imresize
+
+# Read an JPEG image into a numpy array
+img = imread('assets/cat.jpg')
+print(img.dtype, img.shape)  # Prints "uint8 (400, 248, 3)"
+
+# We can tint the image by scaling each of the color channels
+# by a different scalar constant. The image has shape (400, 248, 3);
+# we multiply it by the array [1, 0.95, 0.9] of shape (3,);
+# numpy broadcasting means that this leaves the red channel unchanged,
+# and multiplies the green and blue channels by 0.95 and 0.9
+# respectively.
+img_tinted = img * [1, 0.95, 0.9]
+
+# Resize the tinted image to be 300 by 300 pixels.
+img_tinted = imresize(img_tinted, (300, 300))
+
+# Write the tinted image back to disk
+imsave('assets/cat_tinted.jpg', img_tinted)
+```
+
+![cat](../Images/cat.jpg)
+
+![cat_tinted](../Images/cat_tinted.jpg)
+
+### MATLAB files
+
+函数`scipy.io.loadmat`和`scipy.io.savemat`允许您读写MATLAB文件。 你可以在文档[Scipy.io](https://docs.scipy.org/doc/scipy/reference/io.html)中阅读它们的用法。
+
+### Distance between points
+
+SciPy定义了一些用于计算点集之间距离的有用函数。
+函数`scipy.spatial.distance.pdist`计算给定集合中所有点对之间的距离：
+
+```python
+import numpy as np
+from scipy.spatial.distance import pdist, squareform
+
+# Create the following array where each row is a point in 2D space:
+# [[0 1]
+#  [1 0]
+#  [2 0]]
+x = np.array([[0, 1], [1, 0], [2, 0]])
+print(x)
+
+# Compute the Euclidean distance between all rows of x.
+# d[i, j] is the Euclidean distance between x[i, :] and x[j, :],
+# and d is the following array:
+# [[ 0.          1.41421356  2.23606798]
+#  [ 1.41421356  0.          1.        ]
+#  [ 2.23606798  1.          0.        ]]
+d = squareform(pdist(x, 'euclidean'))
+print(d)
+```
+
+您可以在文档[pdist](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html)中阅读有关此功能的所有详细信息。
+一个类似的函数（`scipy.spatial.distance.cdist`）计算两集合点之间两两的距离; 你可以在文档[cdist](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cdist.html)中阅读它。
+
+### Matplotlib
+
+[Matplotlib](https://matplotlib.org/)是一个绘图库。 在本节中，对`matplotlib.pyplot`模块进行简要介绍，该模块提供了一个类似于MATLAB的绘图系统。
+
+### Plotting
+
+matplotlib中最重要的功能是`plot`函数，用来绘制2D数据。 这是一个简单的例子：
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Compute the x and y coordinates for points on a sine curve
+x = np.arange(0, 3 * np.pi, 0.1)
+y = np.sin(x)
+
+# Plot the points using matplotlib
+plt.plot(x, y)
+plt.show()  # You must call plt.show() to make graphics appear.
+```
+
+![sine](../Images/sine.png)
+
+只需一点点额外工作，我们就可以轻松地一次绘制多行，并添加标题，图例和轴标签：
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Compute the x and y coordinates for points on sine and cosine curves
+x = np.arange(0, 3 * np.pi, 0.1)
+y_sin = np.sin(x)
+y_cos = np.cos(x)
+
+# Plot the points using matplotlib
+plt.plot(x, y_sin)
+plt.plot(x, y_cos)
+plt.xlabel('x axis label')
+plt.ylabel('y axis label')
+plt.title('Sine and Cosine')
+plt.legend(['Sine', 'Cosine'])
+plt.show()
+```
+
+![](../Images/sine_cosine.png)
+
+您可以在文档[plot](https://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot)中阅读关于`plot`函数的更多信息。
+
+### Subplots
+
+您可以使用`subplot`函数在同一个图中绘制不同的东西。 这里是一个例子：
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Compute the x and y coordinates for points on sine and cosine curves
+x = np.arange(0, 3 * np.pi, 0.1)
+y_sin = np.sin(x)
+y_cos = np.cos(x)
+
+# Set up a subplot grid that has height 2 and width 1,
+# and set the first such subplot as active.
+plt.subplot(2, 1, 1)
+
+# Make the first plot
+plt.plot(x, y_sin)
+plt.title('Sine')
+
+# Set the second subplot as active, and make the second plot.
+plt.subplot(2, 1, 2)
+plt.plot(x, y_cos)
+plt.title('Cosine')
+
+# Show the figure.
+plt.show()
+```
+
+![](../Images/sine_cosine_subplot.png)
+
+您可以在文档[subplot](https://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplot)中阅读更多关于`subplot`函数的信息。
+
+### Images
+
+```python
+import numpy as np
+from scipy.misc import imread, imresize
+import matplotlib.pyplot as plt
+
+img = imread('assets/cat.jpg')
+img_tinted = img * [1, 0.95, 0.9]
+
+# Show the original image
+plt.subplot(1, 2, 1)
+plt.imshow(img)
+
+# Show the tinted image
+plt.subplot(1, 2, 2)
+
+# A slight gotcha with imshow is that it might give strange results
+# if presented with data that is not uint8. To work around this, we
+# explicitly cast the image to uint8 before displaying it.
+# img图像是[0, 255],img_tinted是浮点数，浮点数的图像范围是[0, 1]，所以要转换。
+plt.imshow(np.uint8(img_tinted))
+plt.show()
+```
+
+![](../Images/cat_tinted_imshow.png)
