@@ -1,7 +1,7 @@
 这是一个介绍性讲座，旨在介绍图像分类问题以及数据驱动方法。目录：
 
 - [Intro to Image Classification, data-driven approach, pipeline](#image-classification)
-- Nearest Neighbor Classifier
+- [Nearest Neighbor Classifier](#nearest-neighbor-classifier)
   - k-Nearest Neighbor
 - Validation sets, Cross-validation, hyperparameter tuning
 - Pros/Cons of Nearest Neighbor
@@ -66,6 +66,61 @@ Xtr_rows = Xtr.reshape(Xtr.shape[0], 32 * 32 * 3) # Xtr_rows becomes 50000 x 307
 Xte_rows = Xte.reshape(Xte.shape[0], 32 * 32 * 3) # Xte_rows becomes 10000 x 3072
 ```
 
+将所有图像按行展开，以下我们来训练和评估分类器的分类效果：
 
+```python
+nn = NearestNeighbor() # create a Nearest Neighbor classifier class
+nn.train(Xtr_rows, Ytr) # train the classifier on the training images and labels
+Yte_predict = nn.predict(Xte_rows) # predict labels on the test images
+# and now print the classification accuracy, which is the average number
+# of examples that are correctly predicted (i.e. label matches)
+print 'accuracy: %f' % ( np.mean(Yte_predict == Yte) )
+```
 
+注意，通常评估标准使用**准确度**来衡量，准确度表示预测的正确分数。 注意，我们要构建的所有分类器都满足这一个通用API：它们具有一个从数据和标签中学习的`train(x,y)`函数。 在内部，会建立某种标签的模型，以及如何从数据中预测标签。 然后有一个`predict()`函数，它输入新数据并预测标签。当然，我们忽略了实际的分类器本身。 以下是满足此模板的使用L1距离实现的简单Nearest Neighbor分类器：
 
+```python
+import numpy as np
+
+class NearestNeighbor(object):
+  def __init__(self):
+    pass
+
+  def train(self, X, y):
+    """ X is N x D where each row is an example. Y is 1-dimension of size N """
+    # the nearest neighbor classifier simply remembers all the training data
+    self.Xtr = X
+    self.ytr = y
+
+  def predict(self, X):
+    """ X is N x D where each row is an example we wish to predict label for """
+    num_test = X.shape[0]
+    # lets make sure that the output type matches the input type
+    Ypred = np.zeros(num_test, dtype = self.ytr.dtype)
+
+    # loop over all test rows
+    for i in xrange(num_test):
+      # find the nearest training image to the i'th test image
+      # using the L1 distance (sum of absolute value differences)
+      distances = np.sum(np.abs(self.Xtr - X[i,:]), axis = 1)
+      min_index = np.argmin(distances) # get the index with smallest distance
+      Ypred[i] = self.ytr[min_index] # predict the label of the nearest example
+
+    return Ypred
+```
+
+如果你运行这个代码，你会发现这个分类器在CIFAR-10上只能达到**38.6％**。 这比随机猜测更令人印象深刻（由于存在10个类别，猜中准确度是10％），但远不及人类的表现（[估计约为94％](http://karpathy.github.io/2011/04/27/manually-classifying-cifar10/)）或接近最先进的卷积神经网络的95％，符合人类的准确性（参见CIFAR-10最近Kaggle比赛的[排行榜](https://www.kaggle.com/c/cifar-10/leaderboard)）。
+
+**距离的选择** 计算矢量之间距离的方法还有很多。 另一个常见的选择是使用**L2距离**，它具有计算两个向量之间欧氏距离的几何解释。 距离计算采取如下形式：
+
+$$d_2(I_1, I_2)=\sqrt{\sum_{p} \left(I^p_1 - I^p_2\right)^2}$$
+
+换句话说，我们将像以前一样计算像素差异，但是这次我们将所有这些差值平方，加起来并最终取平方根。 在numpy中，使用上面的代码我们只需要替换一行代码。 计算距离的行：
+
+```python
+distances = np.sqrt(np.sum(np.square(self.Xtr - X[i,:]), axis = 1))
+```
+
+请注意，我在上面代码包含`np.sqrt`函数调用，但是在实际的最近邻程序中，我们可以忽略平方根操作，因为平方根是一个单调函数。也就是说，它距离的大小是缩放的，但它保留了排序。因此最近邻有没有平方根操作结果都是相同的。如果您使用此距离的分类器在CIFAR-10上进行分类，您将获得35.4％的准确度（略低于我们的L1距离结果）。
+
+**L1vsL2**这两个指标之间的差异很有意思。特别是，当涉及两个向量之间的差异时，L2距离比L1距离更不可宽恕。也就是说，L2距离更喜欢一个大的差异。L1和L2距离（或等价于一对图像之间差异的L1 / L2范数）是[p范数](http://planetmath.org/vectorpnorm)最常用的特例。
