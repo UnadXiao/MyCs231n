@@ -2,7 +2,7 @@
 
 - [Intro to Image Classification, data-driven approach, pipeline](#image-classification)
 - [Nearest Neighbor Classifier](#nearest-neighbor-classifier)
-  - k-Nearest Neighbor
+  - [k-Nearest Neighbor](#k-nearest-neighbor-classifier)
 - Validation sets, Cross-validation, hyperparameter tuning
 - Pros/Cons of Nearest Neighbor
 - Summary
@@ -125,3 +125,13 @@ distances = np.sqrt(np.sum(np.square(self.Xtr - X[i,:]), axis = 1))
 请注意，我在上面代码包含`np.sqrt`函数调用，但是在实际的最近邻程序中，我们可以忽略平方根操作，因为平方根是一个单调函数。也就是说，它距离的大小是缩放的，但它保留了排序。因此最近邻有没有平方根操作结果都是相同的。如果您使用此距离的分类器在CIFAR-10上进行分类，您将获得35.4％的准确度（略低于我们的L1距离结果）。
 
 **L1vsL2**这两个指标之间的差异很有意思。特别是，当涉及两个向量之间的差异时，L2距离比L1距离更不可宽恕。也就是说，L2距离更喜欢一个大的差异。L1和L2距离（或等价于一对图像之间差异的L1 / L2范数）是[p范数](http://planetmath.org/vectorpnorm)最常用的特例。
+
+# k-Nearest Neighbor Classifier
+
+您可能已经注意到，当我们希望进行预测时，仅使用最近图像的标签是很奇怪的。实际上，通过使用所谓的**k-最近邻分类器**，分类效果可以做得更好。这个想法很简单：不是在训练集中找到最接近的单个图像，而是找到最接近的前**k**个图像，并让它们在测试图像的标签上投票。特别是，当*k = 1*时，恢复为最近邻分类器。 直观地说，较高的**k**值具有平滑效果，使得分类器对异常值更具抵抗性：
+
+![](../Images/knn.jpeg)
+
+使用平面2维（分为3个类：红色，蓝色，绿色）展示最近邻分类器和5最近邻分类器之间的区别。有色区域显示了L2分类器引起的**判定边界**。 白色区域显示分类不清的点（即至少可以判断为两个类中去）。 注意，在NN分类器的情况下，异常数据点（例如，蓝点云中间的绿点）会创建可能不正确的预测的小岛，而5-NN分类器会平滑这些不规则性，可能会导致更好的**泛化** 在测试数据上（未示出）。还要注意，5-NN图像中的灰色区域是由最近邻居之间的投票关系引起的（例如，2个邻居是红色的，接下来的两个邻居是蓝色的，最后一个邻居是绿色的）。
+
+实际上，你几乎总是想要使用k-Nearest Neighbor。 但是，你应该使用什么样的k值？ 接下来我们转向这个问题。
