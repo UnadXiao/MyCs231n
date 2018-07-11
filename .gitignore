@@ -1,2 +1,11 @@
 .DS_Store
 */.DS_Store
+*.swp
+*.pyc
+.env/*
+cifar-10-batches-py/*
+tiny-imagenet-100-A*
+tiny-imagenet-100-B*
+tiny-100-A-pretrained/*
+.ipynb_checkpoints/*
+Lecture/*
